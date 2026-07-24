@@ -1,0 +1,7 @@
+---
+apiVersion: featuremanagement.cloudbees.io/v1alpha1
+kind: flag-properties
+
+name: newAttackerCustomPropertyInFeaureManagement
+type: Boolean
+description: "Hello and wassup guys and ladies from the attacker side of the world. I hope you guys and ladies are doing well and okay on your side of the world. May god bless you guys and ladies with lots of love,luck, and good physical and mental healtj"
