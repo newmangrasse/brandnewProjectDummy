@@ -4,10 +4,10 @@ kind: target-group
 
 name: attackerFirstTargetGroup
 
-description: hello and wassup guys and ladies from the attacker side of the world. I hope you guys and ladies are doing well and okay on your side of the world. May god bless you guys and ladies with lots of love,luck, and good physical and mental health
+description: hello and wassup guys and ladies from the attacker side of the world. I hope you guys and ladies are doing well and okay on your side of the world. May god bless you guys and ladies with lots of love,luck, and good physical and mental health editedX
 
 conditions:
   allOf:
     - property:
         name: newAttackerCustomPropertyInFeaureManagement
-        operator: is-true
+        operator: is-false
