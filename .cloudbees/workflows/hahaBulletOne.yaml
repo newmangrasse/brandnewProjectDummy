@@ -45,8 +45,10 @@ jobs:
         uses: docker://node:18-alpine
         shell: sh
         run: |
+          echo "Building application..."
+          mkdir -p dist
           npm run build
-          tar -czf app.tar.gz dist/
+          tar -czf app.tar.gz app.js package.json node_modules/
 
       - name: Register build artifact
         id: register
