@@ -55,7 +55,7 @@ jobs:
         id: register-artifact
         uses: cloudbees-io/register-build-artifact@v2
         with:
-          name: puzzle-game-artifact
+          name: brandnewProjectDummy-artifact
           version: ${{ cloudbees.scm.sha }}
           url: https://github.com/${{ cloudbees.scm.repositoryUrl }}/releases/download/${{ cloudbees.scm.sha }}/app.tar.gz
 
