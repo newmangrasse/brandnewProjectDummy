@@ -9,14 +9,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  build:
+    outputs:
+      artifact-id: ${{ steps.register.outputs.artifact-id }}
     steps:
-      - name: Set up workspace
-        uses: docker://alpine:latest
-        shell: sh
-        run: |
-          echo "Workspace ready"
-
       - name: Checkout code
         uses: cloudbees-io/checkout@v1
 
@@ -52,6 +48,17 @@ jobs:
           npm run build
           tar -czf app.tar.gz dist/
 
+      - name: Register build artifact
+        id: register
+        uses: cloudbees-io/register-build-artifact@v2
+        with:
+          name: brandnewProjectDummy-artifact
+          version: ${{ cloudbees.scm.sha }}
+          url: https://github.com/${{ cloudbees.scm.repository }}/releases/download/${{ cloudbees.scm.sha }}/app.tar.gz
+
+  deploy:
+    needs: build
+    steps:
       - name: Deploy to production
         uses: docker://alpine:latest
         shell: sh
@@ -63,13 +70,12 @@ jobs:
       - name: Register deployment
         uses: cloudbees-io/register-deployed-artifact@v2
         with:
-          name: brandnewProjectDummy-artifact
-          version: ${{ cloudbees.scm.sha }}
-          environment: production
-          url: https://github.com/${{ cloudbees.scm.repository }}/releases/download/${{ cloudbees.scm.sha }}/app.tar.gz
+          artifact-id: ${{ needs.build.outputs.artifact-id }}
+          target-environment: production
 
       - name: Finalize job
         uses: docker://alpine:latest
         shell: sh
         run: |
           echo "Job completed successfully"
+
