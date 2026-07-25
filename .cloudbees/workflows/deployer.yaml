@@ -1,7 +1,6 @@
 apiVersion: automation.cloudbees.io/v1alpha1
 kind: workflow
-name: deployer
-
+name: deployereditedX
 on:
   workflow_call:
     inputs:
@@ -11,7 +10,6 @@ on:
       manifest:
         type: string
         required: true
-
 jobs:
   puzzle-game-editedX-newVersion:
     if: ${{ fromJSON(inputs.manifest)['puzzle-game-editedX']['newVersion'].deploy }}
