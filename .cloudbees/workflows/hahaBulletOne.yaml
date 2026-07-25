@@ -1,4 +1,4 @@
-apiVersion: automation.cloudbees.io/v1alpha1
+piVersion: automation.cloudbees.io/v1alpha1
 kind: workflow
 name: Build and Deploy Workflow
 
@@ -9,9 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    outputs:
-      artifact-id: ${{ steps.register.outputs.artifact-id }}
+  build-and-deploy:
     steps:
       - name: Checkout code
         uses: cloudbees-io/checkout@v1
@@ -49,31 +47,15 @@ jobs:
           mkdir -p dist
           npm run build
           tar -czf app.tar.gz app.js package.json node_modules/
+          echo "Build artifact created: app.tar.gz"
 
-      - name: Register build artifact
-        id: register
-        uses: cloudbees-io/register-build-artifact@v2
-        with:
-          name: brandnewProjectDummy-artifact
-          version: ${{ cloudbees.scm.sha }}
-          url: https://github.com/${{ cloudbees.scm.repository }}/releases/download/${{ cloudbees.scm.sha }}/app.tar.gz
-
-  deploy:
-    needs: build
-    steps:
       - name: Deploy to production
         uses: docker://alpine:latest
         shell: sh
         run: |
           echo "Deploying application to production..."
-          echo "Artifact ready: app.tar.gz"
+          echo "Artifact: app.tar.gz"
           echo "Deployment completed successfully"
-
-      - name: Register deployment
-        uses: cloudbees-io/register-deployed-artifact@v2
-        with:
-          artifact-id: ${{ needs.build.outputs.artifact-id }}
-          target-environment: production
 
       - name: Finalize job
         uses: docker://alpine:latest
