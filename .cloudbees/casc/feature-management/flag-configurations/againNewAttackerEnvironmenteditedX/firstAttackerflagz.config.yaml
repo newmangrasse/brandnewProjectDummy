@@ -4,10 +4,10 @@ kind: flag-configuration
 
 flag: firstAttackerflagz
 
-enabled: false
+enabled: true
 
 stickinessProperty: rox.distinct_id
 
-defaultValue: false
+defaultValue: true
 
 conditions: []
