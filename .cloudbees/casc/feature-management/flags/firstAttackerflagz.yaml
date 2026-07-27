@@ -1,0 +1,15 @@
+---
+apiVersion: featuremanagement.cloudbees.io/v1alpha1
+kind: flag
+
+flag: firstAttackerflagz
+flagType: boolean
+description: helli
+labels:
+  - nothinglabel
+
+availableValues:
+  - "true"
+  - "false"
+
+isPermanent: false
