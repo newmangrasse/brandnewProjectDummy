@@ -1,0 +1,16 @@
+---
+apiVersion: featuremanagement.cloudbees.io/v1alpha1
+kind: flag
+
+flag: Newflaginsidezappl
+flagType: boolean
+description: hello and wassup
+labels:
+  - newlabel
+  - helloandaa
+
+availableValues:
+  - "true"
+  - "false"
+
+isPermanent: true
