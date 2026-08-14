@@ -1,0 +1,371 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "GeneratedAPI_2026-08-14-1703fromCodeAI",
+    "description" : "Client-side API for generating AppsFlyer OneLink and direct click tracking URLs with customizable tracking parameters. Supports platform-specific URL construction, input validation, and skip list filtering.\n",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://hoalalal.onelink.me/384B",
+    "description" : "AppsFlyer OneLink base URL"
+  }, {
+    "url" : "https://impressions.onelink.me",
+    "description" : "Impressions tracking service"
+  }, {
+    "url" : "https://engagements.appsflyersdk.com/v1.0/c2s/click/app/{platform}",
+    "description" : "Click tracking service",
+    "variables" : {
+      "platform" : {
+        "default" : "ios",
+        "enum" : [ "ios", "android", "roku", "tizen", "firetv", "samsung", "lg", "web" ]
+      }
+    }
+  } ],
+  "paths" : {
+    "/generateOneLinkURL" : {
+      "post" : {
+        "tags" : [ "OneLink", "Tracking" ],
+        "summary" : "Generate an AppsFlyer OneLink URL with tracking parameters",
+        "operationId" : "generateOneLinkURL",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "required" : [ "afParameters", "oneLinkURL", "referrerSkipList", "urlSkipList" ],
+                "type" : "object",
+                "properties" : {
+                  "oneLinkURL" : {
+                    "type" : "string",
+                    "description" : "Base OneLink URL",
+                    "format" : "uri",
+                    "example" : "https://hoalalal.onelink.me/384B"
+                  },
+                  "afParameters" : {
+                    "$ref" : "#/components/schemas/AfParameters"
+                  },
+                  "referrerSkipList" : {
+                    "type" : "array",
+                    "description" : "List of referrer strings to skip URL generation",
+                    "example" : [ "example.com", "localhost" ],
+                    "items" : {
+                      "type" : "string"
+                    }
+                  },
+                  "urlSkipList" : {
+                    "type" : "array",
+                    "description" : "List of URL substrings to skip URL generation",
+                    "example" : [ "skip=true", "test" ],
+                    "items" : {
+                      "type" : "string"
+                    }
+                  },
+                  "webReferrer" : {
+                    "type" : "string",
+                    "description" : "Optional web referrer string",
+                    "example" : "https://referrer.example.com"
+                  }
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Generated OneLink click URL or null if validation fails",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "clickURL" : {
+                      "type" : "string",
+                      "description" : "Generated click URL or null if generation failed",
+                      "format" : "uri",
+                      "nullable" : true,
+                      "example" : "https://hoalalal.onelink.me/384B?pid=mediaSource&c=campaign"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid input parameters",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/generateDirectClickURL" : {
+      "post" : {
+        "tags" : [ "OneLink", "Tracking" ],
+        "summary" : "Generate a direct click tracking URL for a specified platform and app",
+        "operationId" : "generateDirectClickURL",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "required" : [ "afParameters", "app_id", "platform", "redirectURL", "referrerSkipList", "urlSkipList" ],
+                "type" : "object",
+                "properties" : {
+                  "afParameters" : {
+                    "$ref" : "#/components/schemas/AfParameters"
+                  },
+                  "referrerSkipList" : {
+                    "type" : "array",
+                    "description" : "List of referrer strings to skip URL generation",
+                    "example" : [ "example.com", "localhost" ],
+                    "items" : {
+                      "type" : "string"
+                    }
+                  },
+                  "urlSkipList" : {
+                    "type" : "array",
+                    "description" : "List of URL substrings to skip URL generation",
+                    "example" : [ "skip=true", "test" ],
+                    "items" : {
+                      "type" : "string"
+                    }
+                  },
+                  "platform" : {
+                    "type" : "string",
+                    "description" : "Target platform for click URL",
+                    "example" : "ios",
+                    "enum" : [ "ios", "android", "roku", "tizen", "firetv", "samsung", "lg", "web" ]
+                  },
+                  "app_id" : {
+                    "type" : "string",
+                    "description" : "Application identifier",
+                    "example" : "com.example.app"
+                  },
+                  "redirectURL" : {
+                    "type" : "string",
+                    "description" : "URL to redirect after click",
+                    "format" : "uri",
+                    "example" : "https://example.com/landing"
+                  }
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Generated direct click URL or null if validation fails",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "clickURL" : {
+                      "type" : "string",
+                      "description" : "Generated direct click URL or null if generation failed",
+                      "format" : "uri",
+                      "nullable" : true,
+                      "example" : "https://engagements.appsflyersdk.com/v1.0/c2s/click/app/ios?pid=mediaSource&c=campaign"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid input parameters",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "AfParameters" : {
+        "type" : "object",
+        "properties" : {
+          "mediaSource" : {
+            "type" : "object",
+            "properties" : {
+              "keys" : {
+                "type" : "array",
+                "example" : [ "google", "facebook" ],
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "overrideValues" : {
+                "type" : "object",
+                "additionalProperties" : {
+                  "type" : "string"
+                },
+                "example" : {
+                  "google" : "google_override",
+                  "facebook" : "fb_override"
+                }
+              },
+              "defaultValue" : {
+                "type" : "string",
+                "example" : "default_media_source"
+              }
+            },
+            "description" : "Media source keys and overrides"
+          },
+          "campaign" : {
+            "example" : "summer_sale",
+            "oneOf" : [ {
+              "type" : "string"
+            }, {
+              "type" : "object",
+              "properties" : {
+                "keys" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "defaultValue" : {
+                  "type" : "string"
+                }
+              }
+            } ]
+          },
+          "channel" : {
+            "example" : "social",
+            "oneOf" : [ {
+              "type" : "string"
+            }, {
+              "type" : "object",
+              "properties" : {
+                "keys" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "defaultValue" : {
+                  "type" : "string"
+                }
+              }
+            } ]
+          },
+          "ad" : {
+            "example" : "ad_123",
+            "oneOf" : [ {
+              "type" : "string"
+            }, {
+              "type" : "object",
+              "properties" : {
+                "keys" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "defaultValue" : {
+                  "type" : "string"
+                }
+              }
+            } ]
+          },
+          "adSet" : {
+            "example" : "adset_456",
+            "oneOf" : [ {
+              "type" : "string"
+            }, {
+              "type" : "object",
+              "properties" : {
+                "keys" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "defaultValue" : {
+                  "type" : "string"
+                }
+              }
+            } ]
+          },
+          "deepLinkValue" : {
+            "type" : "string",
+            "description" : "Deep link value for the URL",
+            "example" : "myapp://home"
+          },
+          "afSub1" : {
+            "type" : "string",
+            "example" : "sub_param_1"
+          },
+          "afSub2" : {
+            "type" : "string",
+            "example" : "sub_param_2"
+          },
+          "afSub3" : {
+            "type" : "string",
+            "example" : "sub_param_3"
+          },
+          "afSub4" : {
+            "type" : "string",
+            "example" : "sub_param_4"
+          },
+          "afSub5" : {
+            "type" : "string",
+            "example" : "sub_param_5"
+          },
+          "afCustom" : {
+            "type" : "array",
+            "description" : "Custom tracking parameters",
+            "items" : {
+              "$ref" : "#/components/schemas/CustomParameter"
+            }
+          },
+          "googleClickIdKey" : {
+            "type" : "string",
+            "description" : "Key name for Google Click ID parameter (gclid)",
+            "example" : "gclid"
+          }
+        },
+        "description" : "Container for tracking parameters and overrides"
+      },
+      "CustomParameter" : {
+        "required" : [ "defaultValue", "paramKey" ],
+        "type" : "object",
+        "properties" : {
+          "paramKey" : {
+            "type" : "string",
+            "description" : "Parameter key name",
+            "example" : "custom_param"
+          },
+          "defaultValue" : {
+            "type" : "string",
+            "description" : "Default value for the parameter",
+            "example" : "default_value"
+          }
+        },
+        "description" : "Custom tracking parameter with default value"
+      },
+      "ErrorResponse" : {
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "example" : "Invalid input parameters"
+          }
+        },
+        "description" : "Error response with message"
+      }
+    }
+  }
+}
