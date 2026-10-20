@@ -1,0 +1,7 @@
+priority_rules:
+  - name: newAttackerDemoRule
+    priority: low
+    conditions:
+      - base = main
+      - number = 0
+    allow_checks_interruption: false
