@@ -1,0 +1,6 @@
+queue_rules:
+  - name: queuerRuleFirstattacker
+    queue_conditions:
+      - number = 0
+merge_queue:
+  max_parallel_checks: 3
